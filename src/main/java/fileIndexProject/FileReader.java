@@ -20,9 +20,11 @@ public class FileReader {
 			input.useDelimiter(" +|(\\.)|(\\n)|(\\r)|(\\t)|(\\b)|(\\f)"); //delimit whitespace, periods, newline, return carriage and tabs
 			while(input.hasNext()) {
 				word = input.next();
-				position = input.match().start();
-				Pair pair = new Pair(word, position);
-				set.add(pair); //add pair to the set of pairs
+				if(!word.equals("")){
+					position = input.match().start();
+					Pair pair = new Pair(word, position);
+					set.add(pair); //add pair to the set of pairs
+				}
 			}
 			input.close();
 			return set;
