@@ -40,6 +40,21 @@ public class WordContainer {
 		}
 	}
 	
+	public void findPrint(String key){
+		ArrayList<Pair> set = new ArrayList<Pair>();
+		set = data.get(key);
+		if(set != null){
+			for(Pair pair : set){
+				System.out.println("File Path: " + pair.getFilePath());
+				System.out.println("Word Position: " + pair.getPosition());
+			}
+		}
+		else {
+			System.out.println("Word does not exist in data set.");
+		}
+		System.out.println("Enter a word: ");
+	}
+	
 	public void printWordContainer(){
 		Set<String> keys = this.data.keySet();
 		for(String key: keys){
