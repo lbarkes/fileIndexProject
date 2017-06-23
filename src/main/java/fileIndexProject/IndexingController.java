@@ -1,22 +1,22 @@
 package fileIndexProject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class IndexingController {
 	
-	public WordContainer indexDirectory(String dir){
+	public WordContainer indexDirectory(String dir) throws IOException{
 		WordContainer index = new WordContainer();
 		FileFinder f = new FileFinder();
 		File[] test = f.find(dir);
 		for(File file : test){
 			ArrayList<Pair> set = new ArrayList<Pair>();
 			if(test != null){
-				FileReader r = new FileReader();
+				FileIndexer r = new FileIndexer();
 				try{
 					set = r.read(file);
-				} catch(FileNotFoundException e) {
+				} catch(IllegalArgumentException e) {
 					System.out.println("Error: File not found.");
 				}
 			}
