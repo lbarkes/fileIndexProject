@@ -1,6 +1,10 @@
 package fileIndexProject;
 import java.util.Hashtable;
 import java.util.Set;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 /**
  * 
@@ -10,7 +14,6 @@ import java.util.ArrayList;
  */
 public class WordContainer {
 	private Hashtable<String, ArrayList<Pair>> data;
-	
 
 	public WordContainer() {
 		this.data = new Hashtable<String, ArrayList<Pair>>();
@@ -40,9 +43,9 @@ public class WordContainer {
 		}
 	}
 	
-	public void findWord(String key){
+	public ObservableList<Pair> findWord(String key){
 		//do stuff
-		printKeyResult(this.data.get(key));
+		return printKeyResult(this.data.get(key));
 		
 	}
 	
@@ -53,12 +56,13 @@ public class WordContainer {
 	 * Input: String phrase, only excepts characters a-Z, 0-9, comma, period, whitespace
 	 * Output: System out of file and position beginning of phrase
 	 */
-	public void findPhrase(String phrase){
+	public ObservableList<Pair> findPhrase(String phrase){
+		ObservableList<Pair> obsList = FXCollections.observableArrayList();
 		if(phrase.equals("")){ //check for empty input
-			return;
+			return obsList;
 		}
 		else if(phrase.trim().length() == 0){ //check for string that is only whitespace
-			return;
+			return obsList;
 		}
 		//initialize everything
 		StringBuilder word = new StringBuilder();
@@ -94,9 +98,9 @@ public class WordContainer {
 		}
 		
 		//check if phrase is actually just one word
-		if(this.data.containsKey(phraseSplit.get(0)) && phraseSplit.size() == 1){
-			findWord(phraseSplit.get(0));
-			return;
+		if(this.data.containsKey(phraseSplit.get(0)) && phraseSplit.size() == 1){ //TODO: add observableList to findword
+			obsList = findWord(phraseSplit.get(0));
+			return obsList;
 		}
 		
 		//find if phrase exists
@@ -134,7 +138,7 @@ public class WordContainer {
 				}
 				if(search == false){ //nothing matches
 					System.out.println("This phrase does not exist.");
-					return;
+					return obsList;
 				}
 				wordList1 = wordList;
 				totalWhiteSpace = 0;
@@ -143,18 +147,25 @@ public class WordContainer {
 			}
 			else{
 				System.out.println("This phrase does not exist.");
-				return;
+				return obsList;
 			}
 		}
-		if(wordList1.isEmpty()){
+		
+		if(wordList1 == null){
 			System.out.println("This phrase does not exist.");
-			return;
+			return obsList;
+		}
+		else if(wordList1.isEmpty()){
+			System.out.println("This phrase does not exist.");
+			return obsList;
 		}
 		else{
 			for(Pair phrases : wordList1){
+				obsList.add(phrases);
 				System.out.println("File Path: " + phrases.getFilePath());
 				System.out.println("Phrase Position: " + (phrases.getPosition() + word2.length() - phrase.length()));
 			}
+			return obsList;
 		}
 	}
 	
@@ -169,9 +180,11 @@ public class WordContainer {
         }
 	}
 	
-	public void printKeyResult(ArrayList<Pair> set){
+	public ObservableList<Pair> printKeyResult(ArrayList<Pair> set){
+		ObservableList<Pair> obsList = FXCollections.observableArrayList();
 		if(set != null){
 			for(Pair pair : set){
+				obsList.add(pair);
 				System.out.println("File Path: " + pair.getFilePath());
 				System.out.println("Word Position: " + pair.getPosition());
 			}
@@ -179,7 +192,6 @@ public class WordContainer {
 		else {
 			System.out.println("Word does not exist in data set.");
 		}
+		return obsList;
 	}
-	
-	
 }

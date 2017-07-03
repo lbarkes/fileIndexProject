@@ -6,10 +6,16 @@ import java.util.ArrayList;
 
 public class IndexingController {
 	
+	private String directory; 
+	
 	public WordContainer indexDirectory(String dir) throws IOException{
+		this.directory = dir;
 		WordContainer index = new WordContainer();
 		FileFinder f = new FileFinder();
 		File[] test = f.find(dir);
+		if(test == null){
+			return null;
+		}
 		for(File file : test){
 			ArrayList<Pair> set = new ArrayList<Pair>();
 			if(test != null){
@@ -26,6 +32,10 @@ public class IndexingController {
 			}
 		}
 		return index;
+	}
+	
+	public String getDirectory(){
+		return directory;
 	}
 	
 }
