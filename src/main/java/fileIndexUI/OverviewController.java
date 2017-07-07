@@ -1,5 +1,6 @@
 package fileIndexUI;
 
+import java.io.File;
 import java.io.IOException;
 
 import fileIndexProject.IndexingController;
@@ -14,6 +15,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -41,6 +44,7 @@ public class OverviewController {
     
     // Reference to the main application.
     private MainApp mainApp;
+    FileChooser fileChooser = new FileChooser();
 
     /**
      * The constructor.
@@ -106,10 +110,21 @@ public class OverviewController {
 			
 		}
 		
-	    
-	    
 	    searchClicked = true;
 	}
+    
+    @FXML
+	private void handleBrowse() {
+    	DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = 
+                directoryChooser.showDialog(mainApp.getPrimaryStage());
+         
+        if(selectedDirectory == null){
+        	directoryField.setText("No Directory selected");
+        }else{
+        	directoryField.setText(selectedDirectory.getAbsolutePath());
+        }
+    }
     
     public boolean isSearchClicked(){
 		return searchClicked;
